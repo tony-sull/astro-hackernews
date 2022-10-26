@@ -7,7 +7,7 @@ const { open = false } = Astro.props
 ---
 
 <hn-toggle open={open ? '' : undefined}>
-    <div class="toggle" class:list={['toggle', { open }]}>
+    <div class:list={['toggle', { open }]}>
         <a class:list={{open}}>{open ? "[-]" : "[+] comments collapsed"}</a>
     </div>
     <ul class="comment-children">
@@ -26,41 +26,36 @@ const { open = false } = Astro.props
 
 <script>
     class HnToggle extends HTMLElement {
-        #toggle = this.toggle.bind(this)
-
-        static get observedAttributes() { return ['open'] }
+        #btn = this.querySelector<HTMLAnchorElement>('a')!
+        #toggle = this.querySelector('.toggle')!
+        #toggleOpen = this.toggleOpen.bind(this)
 
         connectedCallback() {
-            if (this.btn) {
-                this.btn.addEventListener('click', this.#toggle, false)
-            }
+            this.#btn.addEventListener('click', this.#toggleOpen, false)
         }
 
         disconnectedCallback() {
-            if (this.btn) {
-                this.btn.addEventListener('click', this.#toggle)
-            }
+            this.#btn.addEventListener('click', this.#toggleOpen)
         }
 
-        attributeChangedCallback(name: string, _: string, newValue: string) {
-            if (name !== 'open') { return }
-            if (!this.btn) { return }
+        get open() {
+            return this.hasAttribute('open')
+        }
 
-            if (newValue === '') {
-                this.btn.textContent = '[-]'
-                this.btn.parentElement?.classList.add('open')
+        set open(value: boolean) {
+            if (value) {
+                this.setAttribute('open', '')
+                this.#btn.textContent = '[-]'
+                this.#toggle.classList.add('open')
             } else {
-                this.btn.textContent = '[+] comments collapsed'
-                this.btn.parentElement?.classList.remove('open')
+                this.removeAttribute('open')
+                this.#btn.textContent = '[+] comments collapsed'
+                this.#toggle.classList.remove('open')
             }
         }
 
-        get btn(): HTMLAnchorElement | null {
-            return this.querySelector<HTMLAnchorElement>('a')
-        }
-
-        toggle() {
-            this.toggleAttribute('open')
+        toggleOpen() {
+            this.open = !this.open
         }
     }
 
