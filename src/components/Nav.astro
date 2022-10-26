@@ -3,19 +3,19 @@
 
 <header class="header">
   <nav class="inner">
-    <a href="/">
+    <a href="/" class="active">
       <strong>HN</strong>
     </a>
-    <a href="/new">
+    <a href="/new" class:list={{active: Astro.url.pathname === "/new"}}>
       <strong>New</strong>
     </a>
-    <a href="/show">
+    <a href="/show" class:list={{active: Astro.url.pathname === "/show"}}>
       <strong>Show</strong>
     </a>
-    <a href="/ask">
+    <a href="/ask" class:list={{active: Astro.url.pathname === "/ask"}}>
       <strong>Ask</strong>
     </a>
-    <a href="/job">
+    <a href="/job" class:list={{active: Astro.url.pathname === "/job"}}>
       <strong>Jobs</strong>
     </a>
     <a

@@ -16,7 +16,7 @@ const mapStories = {
 
 function safeParseInt(value: any, fallback: number) {
   try {
-    return parseInt(value);
+    return parseInt(value) || fallback;
   } catch {
     return fallback;
   }

@@ -23,8 +23,8 @@ const { story } = Astro.props;
   <br />
   <span class="meta">
     <Show when={story.type !== "job"}>
-      by <a href={`/users/${story.user}`}>{story.user}</a>
-      {story.time_ago} |{" "}
+      by <a href={`/users/${story.user}`}>{story.user}</a>{" "}
+      {story.time_ago}{" "}|{" "}
       <a href={`/stories/${story.id}`}>
         {
           story.comments_count

@@ -8,7 +8,7 @@ const { open = false } = Astro.props
 
 <hn-toggle open={open ? '' : undefined}>
     <div class="toggle" class:list={['toggle', { open }]}>
-        <a>{open ? "[-]" : "[+] comments collapsed"}</a>
+        <a class:list={{open}}>{open ? "[-]" : "[+] comments collapsed"}</a>
     </div>
     <ul class="comment-children">
         <slot />
@@ -16,6 +16,9 @@ const { open = false } = Astro.props
 </hn-toggle>
 
 <style>
+    hn-toggle:not([open]) .toggle {
+        background-color: rgb(255 247 237);
+    }
     hn-toggle:not([open]) ul {
         display: none;
     }
@@ -41,11 +44,14 @@ const { open = false } = Astro.props
 
         attributeChangedCallback(name: string, _: string, newValue: string) {
             if (name !== 'open') { return }
+            if (!this.btn) { return }
 
-            if (this.btn) {
-                this.btn.textContent = newValue === ''
-                    ? '[-]'
-                    : '[+] comments collapsed'
+            if (newValue === '') {
+                this.btn.textContent = '[-]'
+                this.btn.parentElement?.classList.add('open')
+            } else {
+                this.btn.textContent = '[+] comments collapsed'
+                this.btn.parentElement?.classList.remove('open')
             }
         }
 
